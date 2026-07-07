@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+console.log("Authorization Header:", authHeader);
+console.log("Extracted Token:", token);
 
 const authMiddleware = (req, res, next) => {
   try {
