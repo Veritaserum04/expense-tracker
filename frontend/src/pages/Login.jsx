@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -22,10 +23,14 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
       // Redirect to dashboard
-      navigate("/dashboard");
+      toast.success("Welcome back!");
+
+navigate("/dashboard");
 
     } catch (error) {
-      alert(error.response?.data?.message || "Login Failed");
+      toast.error(
+  error.response?.data?.message || "Login failed."
+);
     }
   };
 

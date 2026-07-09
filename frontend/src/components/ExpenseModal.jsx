@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function ExpenseModal({
   isOpen,
@@ -65,12 +66,18 @@ function ExpenseModal({
         });
       }
 
-      onExpenseSaved();
-      onClose();
+      toast.success(
+  editingExpense
+    ? "Expense updated successfully!"
+    : "Expense added successfully!"
+);
+
+onExpenseSaved();
+onClose();
 
     } catch (error) {
       console.error(error);
-      alert("Failed to save expense");
+      toast.error("Failed to save expense.");
     }
   };
 

@@ -2,10 +2,10 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 function ExpenseTable({ expenses, onEdit, onDelete }) {
   return (
-    <div className="bg-white rounded-3xl shadow-lg p-6">
+    <div className="bg-white rounded-3xl shadow-lg p-8">
 
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-slate-800">
+        <h2 className="text-3xl font-bold text-slate-800">
           Recent Expenses
         </h2>
 
@@ -16,9 +16,22 @@ function ExpenseTable({ expenses, onEdit, onDelete }) {
 
       {expenses.length === 0 ? (
 
-        <div className="text-center py-12 text-gray-500">
-          No expenses found.
-        </div>
+        <div className="flex flex-col items-center justify-center py-12">
+
+    <div className="text-6xl">
+      💸
+    </div>
+
+    <h3 className="text-2xl font-bold mt-4 text-slate-800">
+      No Expenses Yet
+    </h3>
+
+    <p className="text-gray-500 mt-2">
+      Click the <span className="font-semibold text-emerald-600">Add Expense</span> button to create your first expense.
+    </p>
+
+  </div>
+
 
       ) : (
 
@@ -46,7 +59,7 @@ function ExpenseTable({ expenses, onEdit, onDelete }) {
 
                 <tr
                   key={expense.id}
-                  className="border-b hover:bg-slate-50 transition"
+                  className="border-b hover:bg-emerald-50 transition duration-300"
                 >
 
                   <td className="py-4 font-medium">

@@ -2,11 +2,11 @@ import DashboardCard from "./DashboardCard";
 
 function DashboardCards({ summary }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
 
       <DashboardCard
         title="Total Expenses"
-        value={`₹${summary.totalExpenses}`}
+        value={`₹${summary.totalExpenses.toLocaleString()}`}
       />
 
       <DashboardCard
@@ -16,12 +16,12 @@ function DashboardCards({ summary }) {
 
       <DashboardCard
         title="Highest Expense"
-        value={`₹${summary.highestExpense}`}
+        value={`₹${summary.highestExpense.toLocaleString()}`}
       />
 
       <DashboardCard
         title="Average Expense"
-        value={`₹${summary.averageExpense}`}
+        value={`₹${summary.averageExpense.toLocaleString()}`}
       />
 
     </div>

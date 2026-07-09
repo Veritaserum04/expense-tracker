@@ -5,7 +5,7 @@ import {
   PointElement,
   LineElement,
   Tooltip,
-  Legend,
+  Filler,
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
@@ -16,7 +16,7 @@ ChartJS.register(
   PointElement,
   LineElement,
   Tooltip,
-  Legend
+  Filler
 );
 
 function MonthlyChart({ data }) {
@@ -29,25 +29,64 @@ function MonthlyChart({ data }) {
 
         data: data.map((item) => item.total),
 
-        borderColor: "#10B981",
+        borderColor: "#10b981",
 
-        backgroundColor: "#A7F3D0",
-
-        tension: 0.4,
+        backgroundColor: "rgba(16,185,129,0.15)",
 
         fill: true,
+
+        tension: 0.45,
+
+        pointRadius: 5,
+
+        pointHoverRadius: 8,
+
+        pointBackgroundColor: "#10b981",
+
+        borderWidth: 4,
       },
     ],
   };
 
-  return (
-    <div className="bg-white rounded-2xl shadow-md p-6">
+  const options = {
+    responsive: true,
 
-      <h2 className="text-xl font-bold mb-5">
-        Monthly Expenses
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+
+    scales: {
+      y: {
+        grid: {
+          color: "#f1f5f9",
+        },
+      },
+
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
+
+  return (
+    <div className="bg-white rounded-3xl shadow-lg p-8">
+
+      <h2 className="text-2xl font-bold text-slate-800">
+        📈 Monthly Spending
       </h2>
 
-      <Line data={chartData} />
+      <p className="text-gray-500 mt-2 mb-8">
+        Track your monthly expenses over time.
+      </p>
+
+      <Line
+        data={chartData}
+        options={options}
+      />
 
     </div>
   );

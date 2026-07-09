@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 import api from "../services/api";
 
@@ -87,11 +88,13 @@ function Dashboard() {
   try {
     await api.delete(`/expenses/${id}`, getHeaders());
 
-    refreshDashboard();
+    toast.success("Expense deleted successfully!");
+
+refreshDashboard();
 
   } catch (error) {
     console.error(error);
-    alert("Failed to delete expense");
+    toast.error("Failed to delete expense.");
   }
 };
   const handleCloseModal = () => {
@@ -100,25 +103,25 @@ function Dashboard() {
   };
 
   if (!summary) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50 flex items-center justify-center">
 
-        <div className="text-center">
+      <div className="text-center">
 
-          <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
 
-          <p className="mt-5 text-lg">
-            Loading Dashboard...
-          </p>
-
-        </div>
+        <p className="mt-5 text-lg text-gray-600">
+          Loading Dashboard...
+        </p>
 
       </div>
-    );
-  }
+
+    </div>
+  );
+}
 
   return (
-    <div className="min-h-screen bg-slate-100 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50 p-10">
 
       <Navbar />
 
@@ -127,12 +130,29 @@ function Dashboard() {
       <div className="flex justify-end mt-8">
 
         <button
-          onClick={handleAddExpense}
-          className="flex items-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
-        >
-          <FaPlus />
-          Add Expense
-        </button>
+  onClick={handleAddExpense}
+  className="
+    flex
+    items-center
+    gap-3
+    bg-gradient-to-r
+    from-emerald-500
+    to-emerald-600
+    hover:from-emerald-600
+    hover:to-emerald-700
+    text-white
+    px-6
+    py-3
+    rounded-2xl
+    shadow-xl
+    hover:scale-105
+    transition-all
+    duration-300
+  "
+>
+  <FaPlus />
+  Add Expense
+</button>
 
       </div>
 

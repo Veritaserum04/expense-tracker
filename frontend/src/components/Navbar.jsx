@@ -4,20 +4,23 @@ function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   return (
-    <div className="flex justify-between items-center mb-10">
+    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
 
       <div>
-        <h1 className="text-4xl font-bold text-slate-800">
-          Expense Tracker
+
+        <h1 className="text-5xl font-black text-slate-800">
+          💰 Expense Tracker
         </h1>
 
-        <p className="text-gray-500 mt-2">
-          Welcome back,
-          <span className="text-emerald-600 font-semibold">
+        <p className="text-gray-500 text-lg mt-2">
+          Manage your finances smarter,
+          <span className="font-bold text-emerald-600">
             {" "}
-            {user?.name || "User"} 👋
+            {user?.name}
           </span>
+          👋
         </p>
+
       </div>
 
       <LogoutButton />
