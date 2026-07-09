@@ -1,69 +1,101 @@
-function ExpenseTable({ expenses }) {
+import { FaEdit, FaTrash } from "react-icons/fa";
+
+function ExpenseTable({ expenses, onEdit, onDelete }) {
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 mt-10">
+    <div className="bg-white rounded-3xl shadow-lg p-6">
 
-      <h2 className="text-2xl font-bold mb-5">
-        Recent Expenses
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-slate-800">
+          Recent Expenses
+        </h2>
 
-      <table className="w-full">
+        <span className="text-gray-500">
+          {expenses.length} Expenses
+        </span>
+      </div>
 
-        <thead>
+      {expenses.length === 0 ? (
 
-          <tr className="border-b">
+        <div className="text-center py-12 text-gray-500">
+          No expenses found.
+        </div>
 
-            <th className="text-left py-3">
-              Title
-            </th>
+      ) : (
 
-            <th className="text-left">
-              Category
-            </th>
+        <div className="overflow-x-auto">
 
-            <th className="text-left">
-              Amount
-            </th>
+          <table className="w-full">
 
-            <th className="text-left">
-              Date
-            </th>
+            <thead>
 
-          </tr>
+              <tr className="border-b text-gray-600">
 
-        </thead>
+                <th className="text-left py-4">Title</th>
+                <th className="text-left">Category</th>
+                <th className="text-left">Amount</th>
+                <th className="text-left">Date</th>
+                <th className="text-center">Actions</th>
 
-        <tbody>
+              </tr>
 
-          {expenses.map((expense) => (
+            </thead>
 
-            <tr
-              key={expense.id}
-              className="border-b hover:bg-slate-50"
-            >
+            <tbody>
 
-              <td className="py-3">
-                {expense.title}
-              </td>
+              {expenses.map((expense) => (
 
-              <td>
-                {expense.category}
-              </td>
+                <tr
+                  key={expense.id}
+                  className="border-b hover:bg-slate-50 transition"
+                >
 
-              <td>
-                ₹{expense.amount}
-              </td>
+                  <td className="py-4 font-medium">
+                    {expense.title}
+                  </td>
 
-              <td>
-                {new Date(expense.date).toLocaleDateString()}
-              </td>
+                  <td>{expense.category}</td>
 
-            </tr>
+                  <td className="font-semibold text-emerald-600">
+                    ₹{expense.amount}
+                  </td>
 
-          ))}
+                  <td>
+                    {new Date(expense.date).toLocaleDateString()}
+                  </td>
 
-        </tbody>
+                  <td>
 
-      </table>
+                    <div className="flex justify-center gap-5">
+
+                      <button
+                        onClick={() => onEdit(expense)}
+                        className="text-blue-600 hover:text-blue-800 transition"
+                      >
+                        <FaEdit size={18} />
+                      </button>
+
+                      <button
+                        onClick={() => onDelete(expense.id)}
+                        className="text-red-600 hover:text-red-800 transition"
+                      >
+                        <FaTrash size={18} />
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      )}
 
     </div>
   );

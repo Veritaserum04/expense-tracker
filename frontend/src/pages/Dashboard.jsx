@@ -7,80 +7,112 @@ import Navbar from "../components/Navbar";
 import DashboardCards from "../components/DashboardCards";
 import MonthlyChart from "../components/MonthlyChart";
 import ExpenseTable from "../components/ExpenseTable";
-import AddExpenseModal from "../components/AddExpenseModal";
+import ExpenseModal from "../components/ExpenseModal";
 
 function Dashboard() {
   const [summary, setSummary] = useState(null);
   const [monthlyData, setMonthlyData] = useState([]);
   const [expenses, setExpenses] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch dashboard summary
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingExpense, setEditingExpense] = useState(null);
+
+  useEffect(() => {
+    refreshDashboard();
+  }, []);
+
+  const getHeaders = () => ({
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
   const fetchSummary = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await api.get("/dashboard", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      const response = await api.get("/dashboard", getHeaders());
       setSummary(response.data.summary);
     } catch (error) {
-      console.error("Summary Error:", error);
+      console.error(error);
     }
   };
 
-  // Fetch monthly chart data
   const fetchMonthlyData = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await api.get("/dashboard/monthly", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(
+        "/dashboard/monthly",
+        getHeaders()
+      );
 
       setMonthlyData(response.data.monthlyExpenses);
     } catch (error) {
-      console.error("Monthly Error:", error);
+      console.error(error);
     }
   };
 
-  // Fetch all expenses
   const fetchExpenses = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await api.get("/expenses", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(
+        "/expenses",
+        getHeaders()
+      );
 
       setExpenses(response.data.expenses);
     } catch (error) {
-      console.error("Expense Error:", error);
+      console.error(error);
     }
   };
 
-  // Refresh everything
   const refreshDashboard = () => {
     fetchSummary();
     fetchMonthlyData();
     fetchExpenses();
   };
 
-  useEffect(() => {
+  const handleAddExpense = () => {
+    setEditingExpense(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEditExpense = (expense) => {
+    setEditingExpense(expense);
+    setIsModalOpen(true);
+  };
+  const handleDeleteExpense = async (id) => {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this expense?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await api.delete(`/expenses/${id}`, getHeaders());
+
     refreshDashboard();
-  }, []);
+
+  } catch (error) {
+    console.error(error);
+    alert("Failed to delete expense");
+  }
+};
+  const handleCloseModal = () => {
+    setEditingExpense(null);
+    setIsModalOpen(false);
+  };
 
   if (!summary) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-2xl font-semibold">
-        Loading Dashboard...
+      <div className="min-h-screen flex items-center justify-center">
+
+        <div className="text-center">
+
+          <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+
+          <p className="mt-5 text-lg">
+            Loading Dashboard...
+          </p>
+
+        </div>
+
       </div>
     );
   }
@@ -93,13 +125,15 @@ function Dashboard() {
       <DashboardCards summary={summary} />
 
       <div className="flex justify-end mt-8">
+
         <button
-          onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-xl hover:bg-emerald-700 transition"
+          onClick={handleAddExpense}
+          className="flex items-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
         >
           <FaPlus />
           Add Expense
         </button>
+
       </div>
 
       <div className="mt-8">
@@ -107,13 +141,20 @@ function Dashboard() {
       </div>
 
       <div className="mt-8">
-        <ExpenseTable expenses={expenses} />
+
+        <ExpenseTable
+  expenses={expenses}
+  onEdit={handleEditExpense}
+  onDelete={handleDeleteExpense}
+/>
+
       </div>
 
-      <AddExpenseModal
+      <ExpenseModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onExpenseAdded={refreshDashboard}
+        onClose={handleCloseModal}
+        onExpenseSaved={refreshDashboard}
+        editingExpense={editingExpense}
       />
 
     </div>
