@@ -10,7 +10,7 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://expense-tracker-six-swart-47.vercel.app",
+      "https://expenseflow-av.vercel.app",
       "http://localhost:5173",
     ],
     credentials: true,
