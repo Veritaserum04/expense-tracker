@@ -18,9 +18,9 @@ function ExpenseTable({ expenses, onEdit, onDelete }) {
 
         <div className="flex flex-col items-center justify-center py-12">
 
-    <div className="text-6xl">
-      💸
-    </div>
+    <div className="text-7xl animate-bounce">
+  💸
+</div>
 
     <h3 className="text-2xl font-bold mt-4 text-slate-800">
       No Expenses Yet
@@ -35,9 +35,9 @@ function ExpenseTable({ expenses, onEdit, onDelete }) {
 
       ) : (
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-2xl">
 
-          <table className="w-full">
+  <table className="min-w-[700px] w-full">
 
             <thead>
 
@@ -62,9 +62,9 @@ function ExpenseTable({ expenses, onEdit, onDelete }) {
                   className="border-b hover:bg-emerald-50 transition duration-300"
                 >
 
-                  <td className="py-4 font-medium">
-                    {expense.title}
-                  </td>
+                  <td className="py-4 font-medium max-w-[180px] truncate">
+  {expense.title}
+</td>
 
                   <td>{expense.category}</td>
 

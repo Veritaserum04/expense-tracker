@@ -19,31 +19,58 @@ ChartJS.register(
   Filler
 );
 
-function MonthlyChart({ data }) {
-  const chartData = {
-    labels: data.map((item) => item.month),
+function MonthlyChart({ expenses }) {
+
+  // Month labels
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // Initialize totals
+  const monthlyTotals = new Array(12).fill(0);
+
+  expenses.forEach((expense) => {
+    const date = new Date(expense.date);
+    const month = date.getMonth();
+
+    monthlyTotals[month] += Number(expense.amount);
+  });
+
+  const data = {
+    labels: monthNames,
 
     datasets: [
       {
-        label: "Monthly Expenses",
+        label: "Expenses",
 
-        data: data.map((item) => item.total),
+        data: monthlyTotals,
+
+        fill: true,
+
+        tension: 0.45,
 
         borderColor: "#10b981",
 
         backgroundColor: "rgba(16,185,129,0.15)",
 
-        fill: true,
-
-        tension: 0.45,
+        borderWidth: 4,
 
         pointRadius: 5,
 
         pointHoverRadius: 8,
 
         pointBackgroundColor: "#10b981",
-
-        borderWidth: 4,
       },
     ],
   };
@@ -51,45 +78,77 @@ function MonthlyChart({ data }) {
   const options = {
     responsive: true,
 
+    maintainAspectRatio: false,
+
     plugins: {
       legend: {
         display: false,
       },
+
+      tooltip: {
+        callbacks: {
+          label: (context) => `₹${context.raw.toLocaleString()}`,
+        },
+      },
     },
 
     scales: {
-      y: {
-        grid: {
-          color: "#f1f5f9",
-        },
-      },
 
       x: {
         grid: {
           display: false,
         },
       },
+
+      y: {
+        beginAtZero: true,
+
+        ticks: {
+          callback: (value) => `₹${value}`,
+        },
+
+        grid: {
+          color: "#f1f5f9",
+        },
+      },
+
     },
+
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg p-8">
 
-      <h2 className="text-2xl font-bold text-slate-800">
-        📈 Monthly Spending
-      </h2>
+    <div className="bg-white rounded-3xl shadow-xl p-6">
 
-      <p className="text-gray-500 mt-2 mb-8">
-        Track your monthly expenses over time.
-      </p>
+      <div className="flex justify-between items-center">
 
-      <Line
-        data={chartData}
-        options={options}
-      />
+        <div>
+
+          <h2 className="text-2xl font-bold text-slate-800">
+            📈 Monthly Spending
+          </h2>
+
+          <p className="text-gray-500 mt-1">
+            Based on current filters
+          </p>
+
+        </div>
+
+      </div>
+
+      <div className="h-[340px] mt-6">
+
+        <Line
+          data={data}
+          options={options}
+        />
+
+      </div>
 
     </div>
+
   );
+
 }
 
 export default MonthlyChart;
