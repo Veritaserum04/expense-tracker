@@ -40,7 +40,7 @@ navigate("/dashboard");
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">
 
         <h1 className="text-4xl font-bold text-center text-emerald-600">
-          Expense Tracker
+          ExpenseFlow
         </h1>
 
         <p className="text-center text-gray-500 mt-2">

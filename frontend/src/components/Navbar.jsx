@@ -9,7 +9,7 @@ function Navbar() {
       <div>
 
         <h1 className="text-5xl font-black text-slate-800">
-          💰 Expense Tracker
+           ExpenseFlow
         </h1>
 
         <p className="text-gray-500 text-lg mt-2">
